@@ -14,7 +14,8 @@ namespace FinalWeb.Client.Services
         Task<List<Student>> GetStudents();
         Task GetRecords();
         Task<Student> GetStudent(int id);
-
         Task<List<Student>> CreateStudent(Student stu);
+        Task<List<Student>> UpdateStudent(Student stu, int id);
+        Task<List<Student>> DeleteStudent(int id);
     }
 }

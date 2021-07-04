@@ -54,5 +54,30 @@ namespace FinalWeb.Server.Controllers
             return Ok(students);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStudent(Student stu, int id)
+        {
+            var dbstu = students.FirstOrDefault(h => h.Id == id);
+            if (dbstu == null)
+                return NotFound("Student wasn't found.");
+
+            var index = students.IndexOf(dbstu);
+            students[index] = stu;
+
+            return Ok(students);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var dbstu = students.FirstOrDefault(h => h.Id == id);
+            if (dbstu == null)
+                return NotFound("Student wasn't found.");
+
+            students.Remove(dbstu);
+
+            return Ok(students);
+        }
+
     }
 }

@@ -24,7 +24,15 @@ namespace FinalWeb.Client.Services
 
         public async Task<List<Student>> CreateStudent(Student stu)
         {
-            var result = await _httpClient.PostAsJsonAsync<Student>($"api/student", stu);
+            var result = await _httpClient.PostAsJsonAsync($"api/student", stu);
+            Students = await result.Content.ReadFromJsonAsync<List<Student>>();
+            OnChange.Invoke();
+            return Students;
+        }
+
+        public async Task<List<Student>> DeleteStudent(int id)
+        {
+            var result = await _httpClient.DeleteAsync($"api/student/{id}");
             Students = await result.Content.ReadFromJsonAsync<List<Student>>();
             OnChange.Invoke();
             return Students;
@@ -43,6 +51,14 @@ namespace FinalWeb.Client.Services
         public async Task<List<Student>> GetStudents()
         {
            Students = await _httpClient.GetFromJsonAsync<List<Student>>("api/student");
+            return Students;
+        }
+
+        public async Task<List<Student>> UpdateStudent(Student stu, int id)
+        {
+            var result = await _httpClient.PutAsJsonAsync($"api/student/{id}", stu);
+            Students = await result.Content.ReadFromJsonAsync<List<Student>>();
+            OnChange.Invoke();
             return Students;
         }
     }

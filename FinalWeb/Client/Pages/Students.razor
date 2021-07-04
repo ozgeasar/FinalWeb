@@ -19,29 +19,39 @@ else
             <th>Last Name</th>
             <th>Status</th>
             <th>Record</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var stu in StudentService.Students)
         { 
-            <tr>
-                <td>@stu.FirstName</td>
-                <td>@stu.LastName</td>
-                <td>@stu.Status</td>
-                <td>@stu.Record.Name</td>
-                <td>
-                    <button class="btn btn-dark" @onclick ="(() => ShowStudent(stu.Id))">Show</button>
-                </td>
-            </tr>
+        <tr>
+            <td>@stu.FirstName</td>
+            <td>@stu.LastName</td>
+            <td>@stu.Status</td>
+            <td>@stu.Record.Name</td>
+            <td>
+                <button class="btn btn-dark" @onclick="(() => ShowStudent(stu.Id))">Show</button>
+            </td>
+            <td>
+                <button class="btn btn-dark" @onclick="(() => EditStudent(stu.Id))">Edit</button>
+            </td>
+            <td>
+                <button class="btn btn-dark" @onclick="(() => DeleteStudent(stu.Id))">Delete</button>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
 }
 
-<EditStudent></EditStudent>
+<EditStudent Stu="studentToEdit"></EditStudent>
 
 @code {   
     //List<FinalWeb.Shared.Student> students = new List<FinalWeb.Shared.Student>();
+    FinalWeb.Shared.Student studentToEdit = new FinalWeb.Shared.Student();
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,6 +64,16 @@ else
     void ShowStudent(int id)
     {
         NavigationManager.NavigateTo($"students/{id}");
+    }
+
+    void EditStudent(int id)
+    {
+        studentToEdit = StudentService.Students.Find(h => h.Id == id);
+    }
+
+    void DeleteStudent(int id)
+    {
+        StudentService.DeleteStudent(id);
     }
 
     public void Dispose()

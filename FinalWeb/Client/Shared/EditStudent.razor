@@ -1,7 +1,7 @@
 ﻿@inject IStudentService StudentService
 @inject IJSRuntime JSRuntime
 
-<h3>EditStudent</h3>
+<h3>Create a new Student</h3>
 
 <EditForm Model="Stu" OnSubmit="HandleSubmit">
     <div class="form-group">
@@ -30,20 +30,37 @@
 
 @code {
 
+    //[Parameter]
+    //public FinalWeb.Shared.Student StudentToEdit { get; set; }
+
+    [Parameter]
     public FinalWeb.Shared.Student Stu { get; set; } = new FinalWeb.Shared.Student();
     int recordId = 1;
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
         await StudentService.GetRecords();
+        recordId = Stu.Record.Id;
     }
 
     async void HandleSubmit()
     {
         Stu.Record = StudentService.Records.FirstOrDefault(c => c.Id == recordId);
-        Console.WriteLine("Submit was called!");
-        JSRuntime.InvokeVoidAsync("console.log", Stu);
+       
+        await JSRuntime.InvokeVoidAsync("console.log", Stu);
 
-        await StudentService.CreateStudent(Stu);
+
+        if(Stu.Id == 0)
+        {
+            await StudentService.CreateStudent(Stu);
+        }
+        else
+        {
+            await StudentService.UpdateStudent(Stu, Stu.Id);
+        }
+
+
+
     }
 
 }
