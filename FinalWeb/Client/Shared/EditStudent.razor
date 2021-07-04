@@ -1,0 +1,17 @@
+﻿<h3>EditStudent</h3>
+
+<EditForm Model="Stu" OnSubmit="HandleSubmit">
+
+</EditForm>
+
+@code {
+
+    public FinalWeb.Shared.Student Stu { get; set; }
+
+    void HandleSubmit()
+    {
+        Console.WriteLine("Submit was called!");
+        Console.WriteLine(Stu.FirstName);
+    }
+
+}

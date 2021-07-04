@@ -1,0 +1,30 @@
+﻿@page "/student/{id:int}"
+@inject IStudentService StudentService
+
+
+@if (stu == null)
+    {
+        <span>Student informations are loading</span>
+    }
+     else
+     {
+        <h3> @stu.FirstName, @stu.LastName is boun @stu.Status. </h3>
+        <span>Student chose this lesson as the @stu.Record.Name lesson </span>
+     }
+
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    FinalWeb.Shared.Student stu = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        stu = await StudentService.GetStudent(Id);
+    }
+
+}

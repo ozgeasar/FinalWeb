@@ -1,0 +1,54 @@
+﻿@page "/students" 
+@inject IStudentService StudentService
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+<h3>Boun Students</h3>
+
+@if (students.Count == 0)
+{
+    <span>Loading students...</span>
+}
+else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Status</th>
+            <th>Record</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stu in students)
+        { 
+            <tr>
+                <td>@stu.FirstName</td>
+                <td>@stu.LastName</td>
+                <td>@stu.Status</td>
+                <td>@stu.Record.Name</td>
+                <td>
+                    <button class="btn btn-dark" @onclick ="(() => ShowStudent(stu.Id))">Show</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@code {   
+    List<FinalWeb.Shared.Student> students = new List<FinalWeb.Shared.Student>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = await StudentService.GetStudents();
+
+    }
+
+    void ShowStudent(int id)
+    {
+        NavigationManager.NavigateTo($"students/{id}");
+    }
+
+}
