@@ -1,17 +1,49 @@
-﻿<h3>EditStudent</h3>
+﻿@inject IStudentService StudentService
+@inject IJSRuntime JSRuntime
+
+<h3>EditStudent</h3>
 
 <EditForm Model="Stu" OnSubmit="HandleSubmit">
-
+    <div class="form-group">
+        <label>First Name</label>
+        <InputText @bind-Value="Stu.FirstName" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Last Name</label>
+        <InputText @bind-Value="Stu.LastName" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Status</label>
+        <InputText @bind-Value="Stu.Status" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Record</label><br />
+        <InputRadioGroup @bind-Value="recordId" class="form-control">
+            @foreach (var record in StudentService.Records)
+                    {
+                        <InputRadio Value="@record.Id" /><span style="padding-left: 5px;">@record.Name</span><br />
+                    }
+        </InputRadioGroup>
+    </div>
+    <button type="submit" class="btn btn-dark">Submit</button>
 </EditForm>
 
 @code {
 
-    public FinalWeb.Shared.Student Stu { get; set; }
-
-    void HandleSubmit()
+    public FinalWeb.Shared.Student Stu { get; set; } = new FinalWeb.Shared.Student();
+    int recordId = 1;
+    protected override async Task OnInitializedAsync()
     {
+        await StudentService.GetRecords();
+    }
+
+    async void HandleSubmit()
+    {
+        Stu.Record = StudentService.Records.FirstOrDefault(c => c.Id == recordId);
         Console.WriteLine("Submit was called!");
-        Console.WriteLine(Stu.FirstName);
+        JSRuntime.InvokeVoidAsync("console.log", Stu);
+
+        await StudentService.CreateStudent(Stu);
     }
 
 }

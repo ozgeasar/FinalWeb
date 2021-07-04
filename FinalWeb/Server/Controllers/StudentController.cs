@@ -24,10 +24,16 @@ namespace FinalWeb.Server.Controllers
             new Student {Id=2, FirstName = "Ali", LastName ="Arslan", Status="student", Record = records[1]},
         };
 
+        [HttpGet("records")]
+        public async Task<IActionResult> GetRecords()
+        {
+            return Ok(records);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetStudents()
         {
-            return Ok(students);
+             return Ok(students);
         }
 
         [HttpGet("{id}")]
@@ -43,6 +49,7 @@ namespace FinalWeb.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateStudent(Student stu)
         {
+            stu.Id = students.Max(h => h.Id + 1);
             students.Add(stu);
             return Ok(students);
         }

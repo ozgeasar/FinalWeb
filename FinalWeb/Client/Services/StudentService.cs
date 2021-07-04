@@ -17,11 +17,17 @@ namespace FinalWeb.Client.Services
             _httpClient = httpClient;
         }
 
+        public List<Record> Records { get; set; } = new List<Record>();
         public async Task<List<Student>> CreateStudent(Student stu)
         {
             var result = await _httpClient.PostAsJsonAsync<Student>($"api/student", stu);
             var students = await result.Content.ReadFromJsonAsync<List<Student>>();
             return students;
+        }
+
+        public async Task GetRecords()
+        {
+            Records = await _httpClient.GetFromJsonAsync<List<Record>>($"api/student/records");
         }
 
         public async Task<Student> GetStudent(int id)

@@ -1,7 +1,7 @@
 ﻿@page "/students" 
 @inject IStudentService StudentService
 @inject NavigationManager NavigationManager
-@implements IDisposable
+
 
 <h3>Boun Students</h3>
 
@@ -37,11 +37,14 @@ else
 </table>
 }
 
+<EditStudent></EditStudent>
+
 @code {   
     List<FinalWeb.Shared.Student> students = new List<FinalWeb.Shared.Student>();
 
     protected override async Task OnInitializedAsync()
     {
+        
         students = await StudentService.GetStudents();
 
     }

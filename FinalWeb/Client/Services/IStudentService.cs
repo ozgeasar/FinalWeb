@@ -8,7 +8,9 @@ namespace FinalWeb.Client.Services
 {
     public interface IStudentService
     {
+        List<Record> Records { get; set; }
         Task<List<Student>> GetStudents();
+        Task GetRecords();
         Task<Student> GetStudent(int id);
 
         Task<List<Student>> CreateStudent(Student stu);
