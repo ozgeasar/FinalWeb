@@ -18,11 +18,16 @@ namespace FinalWeb.Client.Services
         }
 
         public List<Record> Records { get; set; } = new List<Record>();
+        public List<Student> Students { get; set; } = new List<Student>();
+
+        public event Action OnChange;
+
         public async Task<List<Student>> CreateStudent(Student stu)
         {
             var result = await _httpClient.PostAsJsonAsync<Student>($"api/student", stu);
-            var students = await result.Content.ReadFromJsonAsync<List<Student>>();
-            return students;
+            Students = await result.Content.ReadFromJsonAsync<List<Student>>();
+            OnChange.Invoke();
+            return Students;
         }
 
         public async Task GetRecords()
@@ -37,7 +42,8 @@ namespace FinalWeb.Client.Services
 
         public async Task<List<Student>> GetStudents()
         {
-           return await _httpClient.GetFromJsonAsync<List<Student>>("api/student");
+           Students = await _httpClient.GetFromJsonAsync<List<Student>>("api/student");
+            return Students;
         }
     }
 }

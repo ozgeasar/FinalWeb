@@ -1,11 +1,12 @@
 ﻿@page "/students" 
 @inject IStudentService StudentService
 @inject NavigationManager NavigationManager
+@implements IDisposable
 
 
 <h3>Boun Students</h3>
 
-@if (students.Count == 0)
+@if (StudentService.Students.Count == 0)
 {
     <span>Loading students...</span>
 }
@@ -21,7 +22,7 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var stu in students)
+        @foreach (var stu in StudentService.Students)
         { 
             <tr>
                 <td>@stu.FirstName</td>
@@ -40,18 +41,24 @@ else
 <EditStudent></EditStudent>
 
 @code {   
-    List<FinalWeb.Shared.Student> students = new List<FinalWeb.Shared.Student>();
+    //List<FinalWeb.Shared.Student> students = new List<FinalWeb.Shared.Student>();
 
     protected override async Task OnInitializedAsync()
     {
-        
-        students = await StudentService.GetStudents();
+
+        await StudentService.GetStudents();
+        StudentService.OnChange += StateHasChanged;
 
     }
 
     void ShowStudent(int id)
     {
         NavigationManager.NavigateTo($"students/{id}");
+    }
+
+    public void Dispose()
+    {
+        StudentService.OnChange -= StateHasChanged;
     }
 
 }

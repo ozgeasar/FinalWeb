@@ -18,7 +18,7 @@ namespace FinalWeb.Server.Controllers
             new Record {Name = "non credit"}
         };
 
-        List<Student> students = new List<Student>
+        static List<Student> students = new List<Student>
         {
             new Student {Id=1, FirstName = "Fatma", LastName ="Yılmaz", Status="student", Record = records[0]},
             new Student {Id=2, FirstName = "Ali", LastName ="Arslan", Status="student", Record = records[1]},
