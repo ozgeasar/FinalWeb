@@ -14,8 +14,8 @@ namespace FinalWeb.Server.Controllers
     {
         static List<Record> records = new List<Record>
         {
-            new Record {Name = "credit"},
-            new Record {Name = "non credit"}
+            new Record { Id= 1, Name = "credit"},
+            new Record { Id=2, Name = "non credit"}
         };
 
         static List<Student> students = new List<Student>
